@@ -10,18 +10,14 @@ import java.util.List;
 public class StackImp<T> implements Stack<T>{
   //List
   private DoublyLinkedList<T> stack;
-  private int size;
-  //size
 
   public StackImp() {
     stack = new DoublyLinkedList<>();
-    size = 0;
   }
 
   @Override
   public boolean push(T data) {
     stack.addAtTail(data);
-    size ++;
     return true;
   }
 
@@ -29,9 +25,8 @@ public class StackImp<T> implements Stack<T>{
   public T pop() {
     T data = null;
 
-    if(size != 0) {
+    if(stack.getSize() != 0) {
       data = stack.removeAtTail();
-      size --;
     }
 
     return data;
@@ -39,11 +34,11 @@ public class StackImp<T> implements Stack<T>{
 
   @Override
   public boolean isEmpty() {
-    return size == 0 ? true : false;
+    return stack.isEmpty();
   }
 
   @Override
   public Integer size() {
-    return size;
+    return stack.getSize();
   }
 }
