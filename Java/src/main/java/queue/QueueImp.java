@@ -8,36 +8,32 @@ import doublylinkedlist.DoublyLinkedList;
 public class QueueImp<T> implements Queue<T> {
 
   private DoublyLinkedList<T> queue;
-  private int size;
 
   public QueueImp() {
     queue = new DoublyLinkedList<>();
-    size = 0;
   }
 
   @Override
   public int size() {
-    return size;
+    return queue.getSize();
   }
 
   @Override
   public T dequeue() {
     T data = null;
-    if (size != 0){
+    if (queue.getSize() != 0){
       data = queue.removeAtHead();
-      size --;
     }
     return data;
   }
 
   @Override
   public void enqueue(T data) {
-    queue.addAtHead(data);
-    size++;
+    queue.addAtTail(data);
   }
 
   @Override
   public boolean isEmpty() {
-    return size == 0 ? true : false;
+    return queue.isEmpty();
   }
 }

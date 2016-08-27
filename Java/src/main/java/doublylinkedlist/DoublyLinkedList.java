@@ -14,6 +14,14 @@ public class DoublyLinkedList<T> {
     size = 0;
   }
 
+  public Integer getSize() {
+      return size;
+  }
+
+  public boolean isEmpty() {
+      return size == 0 ? true : false;
+  }
+
   //add at head
   public void addAtHead(T data) {
     Node<T> node = new Node<>();
