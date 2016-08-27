@@ -18,7 +18,6 @@ public class DoublyLinkedList<T> {
   public void addAtHead(T data) {
     Node<T> node = new Node<>();
 
-
     //set node data
     node.setData(data);
     node.setNext(head);
@@ -29,7 +28,7 @@ public class DoublyLinkedList<T> {
       head.setPrevious(node);
     }
 
-    //change node
+    //change head
     head = node;
 
     //check if tail is null
@@ -49,16 +48,18 @@ public class DoublyLinkedList<T> {
     node.setNext(null);
     node.setPrevious(tail);
 
-    //set tail
+    //add to tail
     if (null != tail) {
       tail.setNext(node);
     }
-    //add to tail
+
+    //set tail
     tail = node;
 
     if (head == null) {
       head = node;
     }
+
     size++;
   }
 
@@ -80,8 +81,9 @@ public class DoublyLinkedList<T> {
       Node<T> temp = head.getNext();
       data = head.getData();
 
+      head.setNext(null);
+      temp.setPrevious(null);
       head = temp;
-      head.setPrevious(null);
     }
     size--;
     return data;
@@ -104,24 +106,35 @@ public class DoublyLinkedList<T> {
     } else {
       Node<T> temp = tail.getPrevious();
       data = tail.getData();
+
+      tail.setPrevious(null);
+      temp.setNext(null);
       tail = temp;
-      tail.setNext(null);
     }
     size--;
     return data;
   }
 
-  //check if element exits
+  //check if element exists
   public boolean checkElement(T data) {
-
-    if (null != getData(data)) {
-      return true;
+    Node<T> temp1 = head;
+    Node<T> temp2 = tail;
+    
+    while (temp1.getPrevious() != temp2
+            || temp1.getPrevious().getPrevious() != temp2) {
+      if (temp1.getData().equals(data)) {
+          return true;
+      } else if (temp2.getData().equals(data)) {
+          return true;
+      }
+      temp1 = temp1.getNext();
+      temp2 = temp2.getPrevious();
     }
     return false;
   }
 
+  //return first occurence of ele
   public Node<T> getData(T data) {
-
     Node<T> temp = head;
     Node<T> targetNode = null;
     while (temp != null) {
@@ -142,24 +155,31 @@ public class DoublyLinkedList<T> {
       return false;
     }
 
+    size--;
+
     //check if single element
     if (targetNode.getNext() == null && targetNode.getPrevious() == null) {
       head = null;
       tail = null;
+      targetNode = null;
       return true;
     }
 
     //check if start of node
     if (targetNode.getPrevious() == null && targetNode.getNext() != null) {
       head = head.getNext();
+      targetNode.setNext(null);
       head.setPrevious(null);
+      targetNode = null;
       return true;
     }
 
     //check if end of node
-    if (targetNode.getPrevious() == null && targetNode.getNext() != null) {
+    if (targetNode.getNext() == null && targetNode.getPrevious() != null) {
       tail = tail.getPrevious();
-      head.setNext(null);
+      targetNode.setPrevious(null);
+      tail.setNext(null);
+      targetNode = null;
       return true;
     }
 
@@ -167,11 +187,12 @@ public class DoublyLinkedList<T> {
     Node<T> temp = targetNode.getNext();
     temp.setPrevious(targetNode.getPrevious());
     targetNode.getPrevious().setNext(temp);
+    targetNode.setPrevious(null);
+    targetNode.setNext(null);
 
     targetNode = null;
     temp = null;
 
-    size--;
     return true;
   }
 
